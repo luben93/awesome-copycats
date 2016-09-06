@@ -55,7 +55,8 @@ local xresources = awful.util.pread("xrdb -query")
 if not xresources:match(xresources_name) then
     -- Execute once for X server
     os.execute("dex -a -e Awesome")
-    --   os.execute("xbindkeys")
+    awful.util.spawn_with_shell("xbindkeys")
+    awful.util.spawn_with_shell("mopidy")
 end
 awful.util.spawn_with_shell("xrdb -merge <<< " .. "'" .. xresources_name .. ": true'")
 -- }}}
