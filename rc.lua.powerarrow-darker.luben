@@ -54,7 +54,7 @@ local xresources_name = "awesome.started"
 local xresources = awful.util.pread("xrdb -query")
 if not xresources:match(xresources_name) then
     -- Execute once for X server
-    os.execute("dex -a -e Awesome")
+    os.execute("dex -a")
     awful.util.spawn_with_shell("xbindkeys")
     awful.util.spawn_with_shell("mopidy")
 end
