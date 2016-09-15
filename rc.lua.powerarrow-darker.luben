@@ -99,8 +99,8 @@ end
 
 -- {{{ Tags
 tags = {
-    names = { "1", "2", "3", "4", "5"},
-    layout = { layouts[1], layouts[2], layouts[3], layouts[1], layouts[4] }
+    names = { "1", "2", "3", "4", "5" , "6"},
+    layout = { layouts[1], layouts[2], layouts[3], layouts[1], layouts[4], layouts[5] }
 }
 
 for s = 1, screen.count() do
@@ -211,7 +211,8 @@ tempicon = wibox.widget.imagebox(beautiful.widget_temp)
 tempwidget = lain.widgets.temp({
     settings = function()
         widget:set_text(" " .. coretemp_now .. "°C ")
-    end
+    end,
+    tempfile = "/sys/bus/platform/devices/coretemp.0/hwmon/hwmon1/temp1_input"
 })
 
 -- / fs
@@ -290,6 +291,7 @@ awful.button({ modkey }, 1, awful.client.movetotag),
 awful.button({ }, 3, awful.tag.viewtoggle),
 awful.button({ modkey }, 3, awful.client.toggletag),
 awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+awful.button({ }, 6, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
 awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
 mytasklist = {}
@@ -325,6 +327,10 @@ end),
 awful.button({ }, 5, function ()
     awful.client.focus.byidx(-1)
     if client.focus then client.focus:raise() end
+end),
+awful.button({ }, 6, function ()
+    awful.client.focus.byidx(-1)
+    if client.focus then client.focus:raise() end
 end))
 
 for s = 1, screen.count() do
@@ -338,7 +344,8 @@ for s = 1, screen.count() do
     awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
     awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
     awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-    awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+    awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end),
+    awful.button({ }, 6, function () awful.layout.inc(layouts, -1) end)))
 
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
