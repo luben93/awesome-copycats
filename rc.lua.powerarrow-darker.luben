@@ -55,7 +55,7 @@ local xresources = awful.util.pread("xrdb -query")
 if not xresources:match(xresources_name) then
     -- Execute once for X server
     os.execute("dex -a")
-    awful.util.spawn_with_shell("xbindkeys")
+    --awful.util.spawn_with_shell("xbindkeys")
     awful.util.spawn_with_shell("mopidy")
 end
 awful.util.spawn_with_shell("xrdb -merge <<< " .. "'" .. xresources_name .. ": true'")
@@ -418,8 +418,8 @@ awful.key({ modkey }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey }, "Escape", awful.tag.history.restore),
 
 -- Non-empty tag browsing
-awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end),
-awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end),
+--awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end),
+--awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end),
 
 -- Default client focus
 awful.key({ altkey }, "k",
@@ -501,18 +501,18 @@ awful.key({ modkey,	          }, "z",      function () quakeconsole[mouse.screen
 awful.key({ altkey,           }, "c",      function () lain.widgets.calendar:show(7) end),
 awful.key({ altkey,           }, "h",      function () fswidget.show(7) end),
 
--- ALSA volume control
-awful.key({ altkey }, "Up",
+-- [[ ALSA volume control
+awful.key({  }, "XF86AudioRaiseVolume",
 function ()
     os.execute(string.format("amixer set %s 1%%+", volumewidget.channel))
     volumewidget.update()
 end),
-awful.key({ altkey }, "Down",
+awful.key({  }, "XF86AudioLowerVolume",
 function ()
     os.execute(string.format("amixer set %s 1%%-", volumewidget.channel))
     volumewidget.update()
 end),
-awful.key({ altkey }, "m",
+awful.key({  }, "XF86AudioMute",
 function ()
     os.execute(string.format("amixer set %s toggle", volumewidget.channel))
     volumewidget.update()
@@ -524,9 +524,10 @@ function ()
 end),
 
 -- MPD control
-awful.key({ altkey, "Control" }, "Up",
+awful.key({  }, "XF86AudioPlay",
 function ()
-    awful.util.spawn_with_shell("mpc toggle || ncmpc toggle || pms toggle")
+    awful.util.spawn_with_shell('playerctl play-pause')
+    --awful.util.spawn_with_shell("mpc toggle || ncmpc toggle || pms toggle")
     mpdwidget.update()
 end),
 awful.key({ altkey, "Control" }, "Down",
@@ -534,17 +535,44 @@ function ()
     awful.util.spawn_with_shell("mpc stop || ncmpc stop || pms stop")
     mpdwidget.update()
 end),
-awful.key({ altkey, "Control" }, "Left",
+awful.key({ }, "XF86AudioPrev",
 function ()
-    awful.util.spawn_with_shell("mpc prev || ncmpc prev || pms prev")
+    awful.util.spawn_with_shell('playerctl previous')
+    --awful.util.spawn_with_shell("mpc prev || ncmpc prev || pms prev")
     mpdwidget.update()
 end),
-awful.key({ altkey, "Control" }, "Right",
+awful.key({  }, "XF86AudioNext",
 function ()
-    awful.util.spawn_with_shell("mpc next || ncmpc next || pms next")
+    awful.util.spawn_with_shell('playerctl next')
+    --awful.util.spawn_with_shell("mpc next || ncmpc next || pms next")
     mpdwidget.update()
+end),
+-- [[
+awful.key({  },"XF86LaunchA",
+function ()
+    awful.util.spawn_with_shell('xrandr --output eDP1 --auto --output HDMI2 --auto --right-of eDP1')
 end),
 
+awful.key({  },"XF86KbdBrightnessUp",
+function ()
+    awful.util.spawn_with_shell('kbdlight up 10')
+end),
+
+awful.key({  },"XF86KbdBrightnessDown",
+function ()
+    awful.util.spawn_with_shell('kbdlight down 10')
+end),
+
+awful.key({  },"XF86MonBrightnessUp",
+function ()
+    awful.util.spawn_with_shell('light -A 5')
+end),
+
+awful.key({  },"XF86MonBrightnessDown",
+function ()
+    awful.util.spawn_with_shell('light -U 5')
+end),
+--]]
 -- Copy to clipboard
 awful.key({ modkey }, "c", function () awful.util.spawn("xsel -p -o | xsel -i -b") end),
 
