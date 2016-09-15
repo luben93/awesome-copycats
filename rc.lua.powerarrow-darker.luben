@@ -57,6 +57,7 @@ if not xresources:match(xresources_name) then
     os.execute("dex -a")
     --awful.util.spawn_with_shell("xbindkeys")
     awful.util.spawn_with_shell("mopidy")
+    lang = 'us'
 end
 awful.util.spawn_with_shell("xrdb -merge <<< " .. "'" .. xresources_name .. ": true'")
 -- }}}
@@ -71,7 +72,7 @@ modkey     = "Mod4"
 altkey     = "Mod1"
 terminal   = "termite" or "xterm"
 editor     = os.getenv("EDITOR") or "vim" 
-editor_cmd = "xterm -e " .. editor
+editor_cmd = terminal .. " -e '" .. editor
 
 -- user defined
 browser    = "google-chrome-stable"
@@ -117,8 +118,8 @@ end
 
 -- {{{ Menu
 myawesomemenu = {
-    { "manual", terminal .. " -e man awesome" },
-    { "edit config", editor_cmd .. " " .. awesome.conffile .. '"'},
+    { "manual", terminal .. " -e 'man awesome'" },
+    { "edit config",editor_cmd .. " " .. awesome.conffile .. "'"},
     { "restart", awesome.restart },
     { "quit", awesome.quit }
 }
@@ -548,6 +549,16 @@ function ()
     mpdwidget.update()
 end),
 -- [[
+awful.key({  },"XF86LaunchB",
+function ()
+    if lang == 'sv' then
+        lang = 'us' 
+        awful.util.spawn_with_shell('setxkbmap us')
+    else
+        lang = 'sv' 
+        awful.util.spawn_with_shell('setxkbmap se')
+    end
+end),
 awful.key({  },"XF86LaunchA",
 function ()
     awful.util.spawn_with_shell('xrandr --output eDP1 --auto --output HDMI2 --auto --right-of eDP1')
